@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">NotiHook</string>
+
+    <string name="tab_apps">Aplikasi</string>
+    <string name="tab_histories">Histori</string>
+    <string name="tab_settings">Pengaturan</string>
+
+    <string name="topbar_apps_subtitle">%1$d aplikasi terpasang siap dipilih</string>
+    <string name="topbar_histories_subtitle">%1$d histori tersimpan</string>
+    <string name="topbar_settings_subtitle">Forward API dan akses background</string>
+
+    <string name="banner_notification_access_inactive_title">Akses notifikasi belum aktif</string>
+    <string name="banner_notification_access_inactive_body">Aktifkan di tab Pengaturan sebelum menyalakan aplikasi apa pun.</string>
+
+    <string name="search_apps_label">Cari aplikasi</string>
+    <string name="search_apps_placeholder">Nama aplikasi atau package</string>
+    <string name="summary_total">Total</string>
+    <string name="summary_all">Semua</string>
+    <string name="summary_active">Aktif</string>
+    <string name="summary_off">Off</string>
+    <string name="empty_apps_title">Daftar aplikasi belum tersedia</string>
+    <string name="empty_apps_body">Daftar diambil dari aplikasi yang terpasang di perangkat. Jika masih kosong saat runtime, masalahnya ada di luar alur UI ini.</string>
+    <string name="empty_search_result">Tidak ada aplikasi yang cocok dengan pencarian Anda.</string>
+    <string name="app_status_active">Aktif</string>
+    <string name="app_status_off">Off</string>
+    <string name="app_catch_active">Notification catch aktif</string>
+    <string name="app_catch_inactive">Notification catch belum aktif</string>
+    <string name="app_list_tap_hint_ready">Ketuk aplikasi untuk mengubah status dan pengaturan API.</string>
+    <string name="app_list_tap_hint_permission">Akses notifikasi belum aktif. Buka detail aplikasi untuk melanjutkan.</string>
+    <string name="badge_api">Forward</string>
+    <string name="hero_apps_title">Pilih Aplikasi</string>
+    <string name="hero_apps_body">%1$d aplikasi terpasang siap dipilih untuk ditangkap notifikasinya.</string>
+
+    <string name="histories_title">Histori Notifikasi</string>
+    <string name="histories_body">Menampilkan notifikasi dari aplikasi yang sedang aktif.</string>
+    <string name="history_no_title">(Tanpa Judul)</string>
+    <string name="history_status_forward">Status forward: %1$s</string>
+    <string name="history_error">Error: %1$s</string>
+    <string name="history_detail_title">Detail Notifikasi</string>
+    <string name="field_title">title: %1$s</string>
+    <string name="field_text">text: %1$s</string>
+    <string name="field_bigtext">bigtext: %1$s</string>
+    <string name="field_subtext">subtext: %1$s</string>
+    <string name="field_infotext">infotext: %1$s</string>
+    <string name="field_name">name: %1$s</string>
+    <string name="field_pkg">pkg: %1$s</string>
+    <string name="close">Tutup</string>
+
+    <string name="settings_ready_title">Perangkat Siap Digunakan</string>
+    <string name="settings_ready_body">Semua izin utama aktif. Anda bisa lanjut mengatur auto-forward dan menangkap notifikasi.</string>
+    <string name="settings_check_title">Periksa Izin Background</string>
+    <string name="settings_check_body">Aktifkan izin yang masih kurang agar penangkapan notifikasi berjalan stabil di background.</string>
+    <string name="settings_permissions_title">Status Perizinan</string>
+    <string name="permission_notification_title">Akses Notifikasi</string>
+    <string name="permission_notification_body">Wajib aktif agar aplikasi bisa menangkap notifikasi masuk.</string>
+    <string name="permission_battery_title">Abaikan Optimasi Baterai</string>
+    <string name="permission_battery_body">Disarankan agar listener tetap stabil saat aplikasi di background.</string>
+    <string name="status_active">Aktif</string>
+    <string name="status_inactive">Belum Aktif</string>
+    <string name="allow_notification">Izinkan Notifikasi</string>
+    <string name="allow_battery">Izinkan Baterai</string>
+    <string name="recheck">Verifikasi Ulang</string>
+
+    <string name="settings_forward_title">Global User-Agent</string>
+    <string name="settings_user_agent_body">Nilai ini dipakai untuk semua request forward. Aktivasi forward diatur per aplikasi.</string>
+    <string name="global_user_agent">Global User-Agent</string>
+    <string name="default_format">Default: %1$s</string>
+    <string name="save_forward_settings">Simpan User-Agent</string>
+
+    <string name="about_title">Tentang</string>
+    <string name="about_body">Aplikasi ini menangkap notifikasi dari aplikasi yang Anda pilih, menyimpan histori secara lokal, dan bisa meneruskan data ke API secara opsional.</string>
+    <string name="about_features">Fitur utama: filter aplikasi, histori notifikasi, verifikasi izin background, dan auto-forward dengan User-Agent global.</string>
+    <string name="about_open_source">Proyek ini bersifat open source.</string>
+    <string name="about_repository_url">https://github.com/rickicode/NotiHook</string>
+
+    <string name="permission_toast_notification_required">Izinkan akses notifikasi terlebih dahulu</string>
+
+    <string name="app_settings_title">Pengaturan Aplikasi</string>
+    <string name="back">Kembali</string>
+    <string name="app_catch_enabled_badge">Catch Aktif</string>
+    <string name="app_catch_off_badge">Catch Off</string>
+    <string name="app_settings_body">Atur status tangkapan notifikasi dan integrasi API untuk aplikasi ini.</string>
+    <string name="app_settings_catch_section">Notification Catch</string>
+    <string name="app_settings_catch_toggle">Aktifkan notification catch</string>
+    <string name="app_settings_catch_body_ready">Saat aktif, notifikasi dari aplikasi ini akan disimpan ke histori.</string>
+    <string name="app_settings_catch_body_permission">Akses notifikasi belum aktif. Aktifkan dulu di Pengaturan sebelum menyalakan catch.</string>
+    <string name="app_settings_forward_section">Forward</string>
+    <string name="app_settings_forward_toggle">Aktifkan forward</string>
+    <string name="app_settings_forward_body">Saat aktif, notifikasi tersimpan dari aplikasi ini akan diteruskan ke API yang sudah diatur.</string>
+    <string name="app_settings_api_section">Forward / API</string>
+    <string name="api_url">API URL</string>
+    <string name="api_url_example">Contoh: https://domainanda.com/webhook</string>
+    <string name="request_format">Format Request</string>
+    <string name="http_method">HTTP Method</string>
+    <string name="payload_type">Tipe Payload</string>
+    <string name="additional_values">Additional Values</string>
+    <string name="key_value_per_line">key=value per baris</string>
+    <string name="additional_values_example">Contoh: apikey=hijilabs</string>
+    <string name="app_settings_api_save">Simpan Pengaturan API</string>
+    <string name="cancel">Batal</string>
+
+    <string name="validation_api_url_required">API URL wajib diisi</string>
+    <string name="validation_api_url_invalid">API URL harus valid dan diawali http:// atau https://</string>
+    <string name="validation_additional_value_format">Additional value baris %1$d harus format key=value</string>
+    <string name="validation_additional_value_key">Key additional value di baris %1$d tidak boleh kosong</string>
+</resources>

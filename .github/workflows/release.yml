@@ -1,0 +1,130 @@
+name: Release Linux Build
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  build-release:
+    if: github.repository == 'rickicode/NotiHook'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Resolve release metadata
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version_name="${GITHUB_REF_NAME#v}"
+          if [[ -z "$version_name" ]]; then
+            echo "Could not resolve versionName from tag ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+          version_code="${GITHUB_RUN_NUMBER}"
+
+          apk_name="NotiHook-v${version_name}-release.apk"
+          apk_path="app/build/outputs/apk/release/${apk_name}"
+          mapping_path="app/build/outputs/mapping/release/mapping.txt"
+
+          {
+            echo "version_name=${version_name}"
+            echo "version_code=${version_code}"
+            echo "tag_name=${GITHUB_REF_NAME}"
+            echo "apk_name=${apk_name}"
+            echo "apk_path=${apk_path}"
+            echo "mapping_path=${mapping_path}"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Decode signing keystore
+        shell: bash
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${SIGNING_KEYSTORE_BASE64}" ]]; then
+            echo "Missing secret SIGNING_KEYSTORE_BASE64" >&2
+            exit 1
+          fi
+          echo "${SIGNING_KEYSTORE_BASE64}" | base64 --decode > release-keystore.jks
+
+      - name: Generate keystore.properties
+        shell: bash
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          for required_var in SIGNING_STORE_PASSWORD SIGNING_KEY_ALIAS SIGNING_KEY_PASSWORD; do
+            if [[ -z "${!required_var}" ]]; then
+              echo "Missing secret ${required_var}" >&2
+              exit 1
+            fi
+          done
+
+          cat > keystore.properties <<EOF
+          storeFile=release-keystore.jks
+          storePassword=${SIGNING_STORE_PASSWORD}
+          keyAlias=${SIGNING_KEY_ALIAS}
+          keyPassword=${SIGNING_KEY_PASSWORD}
+          EOF
+
+      - name: Build signed release APK
+        env:
+          ADMOB_APP_ID: ${{ secrets.ADMOB_APP_ID }}
+          ADMOB_BANNER_AD_UNIT_ID: ${{ secrets.ADMOB_BANNER_AD_UNIT_ID }}
+          ADMOB_INTERSTITIAL_AD_UNIT_ID: ${{ secrets.ADMOB_INTERSTITIAL_AD_UNIT_ID }}
+        run: >
+          ./gradlew clean assembleRelease
+          -PVERSION_NAME=${{ steps.meta.outputs.version_name }}
+          -PVERSION_CODE=${{ steps.meta.outputs.version_code }}
+          -PADMOB_APP_ID=${ADMOB_APP_ID}
+          -PADMOB_BANNER_AD_UNIT_ID=${ADMOB_BANNER_AD_UNIT_ID}
+          -PADMOB_INTERSTITIAL_AD_UNIT_ID=${ADMOB_INTERSTITIAL_AD_UNIT_ID}
+
+      - name: Verify release artifact exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f "${{ steps.meta.outputs.apk_path }}"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ steps.meta.outputs.apk_name }}
+          path: |
+            ${{ steps.meta.outputs.apk_path }}
+            ${{ steps.meta.outputs.mapping_path }}
+          if-no-files-found: error
+
+      - name: Upload asset to GitHub release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh release upload "${{ steps.meta.outputs.tag_name }}" \
+            "${{ steps.meta.outputs.apk_path }}" \
+            --clobber
