@@ -1,4 +1,4 @@
-name: Release Linux Build
+name: Release Android
 
 permissions:
   contents: write
